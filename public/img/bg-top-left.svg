@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="411" height="156" viewBox="0 0 411 156">
+  <defs>
+    <linearGradient id="bg-shape-light-blue-a" x1="149.723%" x2="14.27%" y1="51.903%" y2="117.811%">
+      <stop offset="0%" stop-color="#98F0FF"/>
+      <stop offset="2.68%" stop-color="#B4F9FF"/>
+      <stop offset="54.468%" stop-color="#65E1FF"/>
+      <stop offset="100%" stop-color="#6DCDFF"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#bg-shape-light-blue-a)" d="M411,2.54705535 C362.649945,-5.11910842 302.391669,4.52002515 230.225175,31.4644561 C121.975433,71.8811025 84.139519,155.911242 0,156 C17.1777043,155.804733 411,156 411,156 L411,2.54705535 Z" transform="rotate(180 205.5 78)"/>
+</svg>
