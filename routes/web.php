@@ -75,4 +75,5 @@ Route::post('paypal/notify', 'RecuringPaymentController@notify');
 
 #CustomerDownloadVideo
 Route::get('video/download/{id}','Customer\CustomerController@downloadvideo')->name('video.download');
+Route::post('/addCusComm', 'Customer\CustomerController@addCustomerComment');
 

@@ -82,7 +82,6 @@ $(document).on('click', '.getImgPath', function () {
     var imgId = $(this).attr('id').split('_');
     $('.toGetImgId').find('img').removeClass('selectedImage').css({'border': ' 1px solid rgba(0,0,0,.1)', 'backgroundColor': 'transparent'});
     $(this).addClass('selectedImage').css({'border': '1px solid red', 'backgroundColor': 'red'});
-
 });
 //select gender type
 $(document).on('click', '.selectType', function () {
@@ -119,7 +118,7 @@ $(document).on('click', '.Next', function () {
     var custId = $(this).parent().parent().parent().parent().parent().parent().find("#custId").val();
     var custOrderId = $(this).parent().parent().parent().parent().parent().parent().find("#custOrderId").val();
     var product_link = $(this).parent().parent().parent().parent().parent().parent().find('#productLink').find('.inputProductLink').val();
-  
+
 //    orderImg
     $(this).parent().parent().parent().parent().parent().parent().find(".toGetImgId").find('img').each(function () {
         if ($(this).hasClass('selectedImage')) {
@@ -163,42 +162,48 @@ $(document).on('click', '.Next', function () {
     });
 });
 /*  Counter Start */
-$(document).ready(function(){
-	$('.counter').each(function(){
-		var countDownDate = $(this).attr("title");		
-		
-		var obj = $(this);
-		// Update the count down every 1 second
-			clock(obj,countDownDate);	
-		
-	});	
+$(document).ready(function () {
+    $('.counter').each(function () {
+        var countDownDate = $(this).attr("title");
+        var uploadVideo = $(this).attr('uploadVideo');
+        var obj = $(this);
+        // Update the count down every 1 second
+        clock(obj, countDownDate, uploadVideo);
+
+    });
 });
 
-function clock(obje,countDownDate)
+function clock(obje, countDownDate, uploadVideo)
 {
-	var x = setInterval(function() {
-		  // Get todays date and time
-		  var now = new Date().getTime();		
-		  // Find the distance between now an the count down date
-		  
-		  var distance = countDownDate - now;	 
-		
-		  if(distance < 0)	 
-		  {
-		  	 	clearInterval(x);
-		  	 	// Take action if date overed
-		  }
-		  else
-		  {
-		  	 var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-			  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			  var seconds = Math.floor((distance % (1000 * 60)) / 1000);			
-			  // Display the result in the element with id="demo"
-			  var st = "<div class='tm'><label class='lbld'>"+ days +"</label><b class='label-b'>:</b><label class='lblh'>" + hours + "</label><b class='label-b'>:</b><label class='lblm'>"+ minutes + "</label><b class='label-b'>:</b><label class='lbls'>" + seconds + "</label></div>";
-			  $(obje).html(st);		
-		  }
-		}, 1000);
+    var x = setInterval(function () {
+        // Get todays date and time
+        var now = new Date().getTime();
+        // Find the distance between now an the count down date
+
+        var distance = countDownDate - now;
+
+        if (distance < 0)
+        {
+            // Take action if date overed
+            if (uploadVideo != '' && uploadVideo != null) {
+                var st = "<div class='tm'><label class='lbld' style='padding-left:8px'>D</label><b class='label-b'>:</b><label class='lblh' style='padding-left:8px'>O</label><b class='label-b'>:</b><label class='lblm' style='padding-left:8px'>N</label><b class='label-b'>:</b><label class='lbls' style='padding-left:8px'>E</label></div>";
+                $(obje).html(st);
+            } else {
+                var st = "<div class='tm'><label class='lbld' style='padding-left:2px'>##</label><b class='label-b'>:</b><label class='lblh'>LA</label><b class='label-b'>:</b><label class='lblm'>TE</label><b class='label-b'>:</b><label class='lbls'>##</label></div>";
+                $(obje).html(st);
+            }
+            clearInterval(x);
+        } else
+        {
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Display the result in the element with id="demo"
+            var st = "<div class='tm'><label class='lbld'>" + days + "</label><b class='label-b'>:</b><label class='lblh'>" + hours + "</label><b class='label-b'>:</b><label class='lblm'>" + minutes + "</label><b class='label-b'>:</b><label class='lbls'>" + seconds + "</label></div>";
+            $(obje).html(st);
+        }
+    }, 1000);
 }
 /*  Counter End */
 
@@ -206,10 +211,30 @@ function clock(obje,countDownDate)
 
 //customer select video
 //next to video variation
+$(document).on('click', '.orderVideoByEmp', function () {
+    var videoId = $(this).attr('id').split('_');
+    $('.orderVideoByEmp').find('.getVideoId').removeClass('selectedVideo').css({'border': ' 1px solid rgba(0,0,0,.1)', 'backgroundColor': 'transparent'});
+    $('.orderVideoByEmp').find('.video-fluid').find('source#link_' + videoId[1]).addClass('selectedVideo');
+    $('.orderVideoByEmp').removeAttr('style');
+    $(this).css({'border': '6px solid red', 'backgroundColor': 'red'});
+});
+
 $(document).on('click', '.saveForm2Data', function () {
-    var selectdVideo = $(this).parent().parent().parent().parent().parent().parent().find('#firstSectionContent').find('.carousel-inner').find('.active').attr('id').split('_');
-    var custOrderId = $(this).parent().parent().parent().parent().parent().parent().find('#cusOrderId').val();
-    
+    var selectdVideo;
+    var music_data = $("#uploadedMusic").prop("files")[0];
+    var logo_data = $("#uploadedLogo").prop("files")[0];
+    var custOrderIdForMusic = $('#cusOrderId').val();
+    var selectVideoByCust = $('.orderVideoByEmp').each(function () {
+        if ($(this).find('.getVideoId').hasClass('selectedVideo')) {
+            var selectdVideoId = $(this).attr('id').split('_');
+            selectdVideo = selectdVideoId[1];
+        }
+    });
+    var form_data = new FormData();
+    form_data.append("music", music_data);
+    form_data.append("logo", logo_data);
+    form_data.append("_orderIdForMusic", custOrderIdForMusic);
+    form_data.append("selectedVdeo", selectdVideo);
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -217,8 +242,11 @@ $(document).on('click', '.saveForm2Data', function () {
         enctype: "multipart/form-data",
         url: webUrl + '/storeSelectVideoData',
         type: "post",
-        data: {selectdVideo: selectdVideo[1], cus_ordId: custOrderId},
+        cache: false,
+        contentType: false,
+        processData: false,
         dataType: 'json',
+        data: form_data,
         success: function (data) {
             if (data.message == 'success') {
                 window.location.href = webUrl + '/video-variations/' + data.cus_id;
@@ -310,19 +338,52 @@ $(document).on('click', '.unsubscribePlanPrice', function () {
 });
 //end unsubscribePlanPrice
 
-//next for video-variation 
+//customer select video end
 
-$(document).on('click', '#nextForVideoVariation', function () {
-    var serviceId = $('.nextAfterSubscribe').children('input[type="hidden"]').val();
-    if (serviceId != '' && serviceId != null) {
-        window.location.href = webUrl + '/paypal/' + serviceId;
-    } else {
-        alert('Please Select Plan');
-    }
+//customer dashboard start
+$(document).on('click', '.approveEdit', function ()
+{
+    var approveEditId = $(this).attr('id').split('_');
+    $(this).hide();
+    $(this).siblings('#approveShow_' + approveEditId[1]).show();
 });
 
+//dispute Modal
 
-//customer select video end
+$(document).on('click', '.openDisputeModal', function () {
+    $('#addComments').modal('show');
+    var order_id = $(this).attr('id').split('_');
+    $('#orderIdForCommentVideo').val(order_id[1]);
+
+});
+
+$(document).on('click', '#addCommentsForVideo', function () {
+    var commentValue = $(this).parents('form').find('#txtAreaValue').val();
+    var orderIdForComent = $(this).parents('form').find('input[type="hidden"]').val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: webUrl + '/addCusComm',
+        type: "post",
+        data: {commentValue: commentValue, orderIdCom: orderIdForComent},
+        datatype: 'json',
+        success: function (data)
+        {
+            if (data.message == 'success')
+            {
+                $('#txtAreaValue').val('');
+                $('#addComments').modal('hide');
+                $('.approveEdit').show();
+                $('#approveShow_' + data.orderIdForComment).hide();
+                alert('Comment Succesfully Send');
+
+            } else {
+                console.log(data.error);
+            }
+        }
+    });
+});
 
 
 $(function () {
